@@ -11,6 +11,10 @@ const sendResponse = (statusCode, body) => ({
 });
 
 const searchPlayers = async search => {
+  if (!search) {
+    return [];
+  }
+
   const query = `SELECT id, first_name, last_name FROM players\n
     WHERE first_name  like '%${search}%'\n
     OR last_name  like '%${search}%'\n
