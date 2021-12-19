@@ -2,15 +2,17 @@ const knex = require("knex");
 const connection = require("/opt/nodejs/connection.json");
 const database = knex({
   client: "mysql",
-  connection
+  connection,
 });
+
+// This is the search module
 
 const sendResponse = (statusCode, body) => ({
   statusCode,
-  body
+  body,
 });
 
-const searchPlayers = async search => {
+const searchPlayers = async (search) => {
   if (!search) {
     return [];
   }
@@ -21,19 +23,19 @@ const searchPlayers = async search => {
     LIMIT 10 OFFSET 0`;
 
   const players = await database.raw(query);
-  const playersToReturn = players[0].map(player => {
+  const playersToReturn = players[0].map((player) => {
     const { first_name, last_name, ...rest } = player;
     return {
       ...rest,
       firstName: first_name,
-      lastName: last_name
+      lastName: last_name,
     };
   });
 
   return playersToReturn;
 };
 
-exports.handler = async event => {
+exports.handler = async (event) => {
   const { search } = event;
   try {
     const players = await searchPlayers(search);
