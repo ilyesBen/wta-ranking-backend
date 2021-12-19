@@ -2,21 +2,15 @@ const knex = require("knex");
 const connection = require("/opt/nodejs/connection.json");
 const database = knex({
   client: "mysql",
-  connection
+  connection,
 });
 
 const sendResponse = (statusCode, body) => ({
   statusCode,
-  body
+  body,
 });
 
-const isArray = array => array.length;
-
-const defaultFilter = {
-  defaultRanking: [0, 100000],
-  defaultRankingPoints: [0, 10000],
-  defaultDate: "2018-12-31"
-};
+const isArray = (array) => array.length;
 
 const getMostRecentDate = async () => {
   const mostRecentDateQuery = `SELECT ranking_date from rankings\n
@@ -47,7 +41,7 @@ const getPlayers = async (filter, limit, offset) => {
     LIMIT ${limit} OFFSET ${offset}`;
 
   const players = await database.raw(query);
-  const playersToReturn = players[0].map(player => {
+  const playersToReturn = players[0].map((player) => {
     const {
       first_name,
       last_name,
@@ -65,14 +59,14 @@ const getPlayers = async (filter, limit, offset) => {
       firstName: first_name,
       lastName: last_name,
       birthDate: birth_date,
-      countryCode: country_code
+      countryCode: country_code,
     };
   });
 
   return playersToReturn;
 };
 
-exports.handler = async event => {
+exports.handler = async (event) => {
   const { filter, limit, offset } = event;
 
   try {
